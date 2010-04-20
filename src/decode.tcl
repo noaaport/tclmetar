@@ -1,5 +1,5 @@
 #
-# $Id: decode.tcl,v 52c516f08e8c 2010/04/20 02:35:02 nieves $
+# $Id: decode.tcl,v aa07ce0455d0 2010/04/20 02:49:56 nieves $
 #
 
 #
@@ -232,9 +232,9 @@ proc metar::decode {line} {
 	     }
 
 	     set metar(param,temp_f) \
-		 [expr int((9.0/5.0) * $metar(param,temp_c) + 32.0)];
+		[format "%.1f" [expr (9.0/5.0) * $metar(param,temp_c) + 32.0]];
 	     set metar(param,dewp_f) \
-		 [expr int((9.0/5.0) * $metar(param,dewp_c) + 32.0)];
+		[format "%.1f" [expr (9.0/5.0) * $metar(param,dewp_c) + 32.0]];
 
 	     continue;
 	}
