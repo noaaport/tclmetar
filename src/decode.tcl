@@ -1,5 +1,5 @@
 #
-# $Id: decode.tcl,v f112d1865eab 2009/09/11 16:26:32 nieves $
+# $Id: decode.tcl,v 52c516f08e8c 2010/04/20 02:35:02 nieves $
 #
 
 #
@@ -98,11 +98,11 @@ proc metar::decode {line} {
 
 	    if {$s2 ne ""} {
 		set metar(param,wind.speed_kt) $s2;
-		set metar(param,wind.speed_mph) [expr $s2 * 1.1508];
+		set metar(param,wind.speed_mph) [expr int($s2 * 1.1508)];
 	    }
 	    if {$s4 ne ""} {
 		set metar(param,wind.gust_kt) $s4;
-		set metar(param,wind.gust_mph) [expr $s4 * 1.1508];
+		set metar(param,wind.gust_mph) [expr int($s4 * 1.1508)];
 	    }
 
 	    continue;
@@ -232,9 +232,9 @@ proc metar::decode {line} {
 	     }
 
 	     set metar(param,temp_f) \
-		 [expr (9.0/5.0) * $metar(param,temp_c) + 32.0];
+		 [expr int((9.0/5.0) * $metar(param,temp_c) + 32.0)];
 	     set metar(param,dewp_f) \
-		 [expr (9.0/5.0) * $metar(param,dewp_c) + 32.0];
+		 [expr int((9.0/5.0) * $metar(param,dewp_c) + 32.0)];
 
 	     continue;
 	}
