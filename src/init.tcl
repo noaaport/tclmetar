@@ -1,5 +1,5 @@
 #
-# $Id: init.tcl,v f112d1865eab 2009/09/11 16:26:32 nieves $
+# $Id: init.tcl,v 6653383e3b4a 2010/07/28 15:44:17 nieves $
 #
 # Copyright (c) 2009 Jose F. Nieves <nieves@ltp.upr.clu.edu>
 #
@@ -152,8 +152,9 @@ proc metar::init_data {} {
     set metar(param,dewp_f) "";
 
     set metar(obs,ALT) "";
-    set metar(param,alt) "";
-    set metar(flag,alt_Q) 0;   # A = Hg, Q = whole mb => flag set
+    set metar(flag,alt_Q) 0;	# 0 => A (hg), 1 => Q (whole mb)
+    set metar(param,alt_hg) "";
+    set metar(param,alt_mb) "";
 
     set metar(obs,REMARKS) "";
 

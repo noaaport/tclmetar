@@ -1,5 +1,5 @@
 #
-# $Id: decode.tcl,v aa07ce0455d0 2010/04/20 02:49:56 nieves $
+# $Id: decode.tcl,v 6653383e3b4a 2010/07/28 15:44:17 nieves $
 #
 
 #
@@ -245,14 +245,18 @@ proc metar::decode {line} {
 	#
 	if {[regexp {^A([[:digit:]]{2})([[:digit:]]{2})} $tok match s1 s2]} {
 	    set metar(obs,ALT) $tok;
-	    set metar(param,alt) $s1.$s2;
+	    set metar(param,alt_hg) $s1.$s2;
+	    set metar(param,alt_mb) \
+		[format "%.2f" [expr $metar(param,alt_hg) * 33.8639]];
 	    continue;
 	}
 
-	if {[regexp {^Q([[:digit:]]{4})} $tok match]} {
-	    set metar(obs,ALT) $tok;
-	    set metar(param,alt) $s1;
+	if {[regexp {^Q([[:digit:]]{4})} $tok match s1]} {
 	    set metar(flag,alt_Q) 1;
+	    set metar(obs,ALT) $tok;
+	    set metar(param,alt_mb) $s1;
+	    set metar(param,alt_hg) \
+		[format "%.2f" [expr $metar(param,alt_mb) / 33.8639]];
 	    continue;
 	}
 

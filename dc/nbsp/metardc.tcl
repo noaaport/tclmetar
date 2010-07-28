@@ -4,7 +4,7 @@
 #
 # See LICENSE
 #
-# $Id: metardc.tcl,v f112d1865eab 2009/09/11 16:26:32 nieves $
+# $Id: metardc.tcl,v 6653383e3b4a 2010/07/28 15:44:17 nieves $
 
 # Usage: metardc [-c | -d] [-h | [-t [-k]]] [-l location] [-o outputfile]
 #		[-s recseparator] [-e obdata | inputfile];
@@ -32,7 +32,7 @@ package require metar;
 set usage {Usage: metardc [-c | -d] [-h | [-t [-k]]] [-l location]
     [-o outputfile] [-s recseparator] [-e obdata | inputfile]};
 
-set optlist {{c} {d} {h} {t} {k} {l.arg ""} {o.arg ""} {s.arg ""} {e.arg ""}};
+set optlist {c d h t k {l.arg ""} {o.arg ""} {s.arg ""} {e.arg ""}};
 
 set conflict_cd 0;
 set conflict_e 0;
@@ -74,8 +74,16 @@ proc print_report {fout line} {
 	puts $fout [format "Dewp: %s F" $::metar::metar(param,dewp_f)];
     }
 
-    if {$::metar::metar(param,alt) ne ""} {
-	puts $fout [format "Pressure: %s inHg" $::metar::metar(param,alt)];
+    if {$::metar::metar(flag,alt_Q) == 0} {
+	if {$::metar::metar(param,alt_hg) ne ""} {
+	    puts $fout [format "Pressure: %s inHg" \
+			    $::metar::metar(param,alt_hg)];
+	}
+    } else {
+	if {$::metar::metar(param,alt_mb) ne ""} {
+	    puts $fout [format "Pressure: %s mb" \
+			    $::metar::metar(param,alt_mb)];
+	}
     }
 
     if {$::metar::metar(param,slp) ne ""} {
@@ -142,7 +150,7 @@ proc print_tabular {fout line} {
 		    $::metar::metar(param,wind.dir) \
 		    $::metar::metar(param,temp_f) \
 		    $::metar::metar(param,dewp_f) \
-		    $::metar::metar(param,alt) \
+		    $::metar::metar(param,alt_hg) \
 		    $::metar::metar(param,slp)];
 }
 
@@ -186,13 +194,14 @@ proc print_report_html {fout line} {
 	append result [format $fmt "Dewp" "$::metar::metar(param,dewp_f) F"];
     }
 
-    if {$::metar::metar(param,alt) ne ""} {
-	append result [format $fmt "Pressure" "$::metar::metar(param,alt) inHg"];
+    if {$::metar::metar(param,alt_hg) ne ""} {
+	append result [format $fmt "Pressure" \
+			   "$::metar::metar(param,alt_hg) inHg"];
     }
 
     if {$::metar::metar(param,slp) ne ""} {
-	append result [format $fmt \
-			   "Sea level pressure" "$::metar::metar(param,slp) mb"];
+	append result [format $fmt "Sea level pressure" \
+			   "$::metar::metar(param,slp) mb"];
     }
 
     if {$::metar::metar(param,visibility) ne ""} {
@@ -206,7 +215,8 @@ proc print_report_html {fout line} {
     }
     
     if {$::metar::metar(param,sky) ne ""} {
-	append result [format $fmt "Sky" [join $::metar::metar(param,sky) ", "]];
+	append result [format $fmt "Sky" \
+			   [join $::metar::metar(param,sky) ", "]];
     }
 
     if {[llength $::metar::metar(param,weatherlog)] != 0} {
