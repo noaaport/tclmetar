@@ -2,7 +2,7 @@
 
 . ../../configure.inc
 
-PROGNAME=npemwinmtrd
+PROGNAME=metardc
 
 savedir=`pwd`
 cd ../..
