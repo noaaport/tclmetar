@@ -1,16 +1,16 @@
 #!/bin/sh
 
-. ../configure.inc
+. ./configure.inc
 
-PROGNAME=npemwinmtrd
+config_dirs="src/lib examples doc"
+
+configure_default
+configure_default Makefile.inc
 
 savedir=`pwd`
-cd tclmetar
-./configure.sh
-cd $savedir
-
-sed -e "/@include@/s||$INCLUDE|" \
-    -e "/@q@/s||$Q|g" \
-    -e "/@INSTALL@/s||$INSTALL|" \
-    -e "/@TCLSH@/s||$TCLSH|" \
-    -e "/@PROGNAME@/s||$PROGNAME|" Makefile.in > Makefile
+for d in $config_dirs
+do
+    cd $d
+    ./configure.sh
+    cd $savedir
+done
