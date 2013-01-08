@@ -28,7 +28,7 @@
 # header of the report (only in the html version).
 
 package require cmdline;
-lappend auto_path %TCLMETAR_INSTALLDIR%;
+lappend auto_path "%TCLMETAR_INSTALLDIR%";
 package require metar;
 
 set usage {Usage: metardc [-c | -d] [-h [-m] | [-t [-k]]] [-H <tag>]

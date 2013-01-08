@@ -1,28 +1,33 @@
 #
-# $Id: Makefile.in,v f112d1865eab 2009/09/11 16:26:32 nieves $
+# $Id$
 #
-@include@ @q@Makefile.inc@q@
-@include@ @q@VERSION@q@
+@include@ @q@../Makefile.inc@q@
 
-DIRS = src/lib examples doc
+PROGNAME =	@PROGNAME@
 
-all: 
-	for dir in ${DIRS}; do \
-	(cd $$dir; ${MAKE}) \
-	done
+SRC =		${TCLMETAR_DIR}/src/dc/dc.tcl
+TARGET =	${PROGNAME}
 
-install:
-	for dir in ${DIRS}; do \
-	(cd $$dir; ${MAKE} install) \
-	done
+TCLMETAR_DIR = tclmetar
+TCLMETAR_LIB =	${TCLMETAR_DIR}/src/lib/metar.tcl
+TCLMETAR_PKGINDEX = ${TCLMETAR_DIR}/src/lib/pkgIndex.tcl
+TCLMETAR_FILES = ${TCLMETAR_LIB} ${TCLMETAR_PKGINDEX}
+TCLMETAR_INSTALLDIR = ${MYLIBEXECDIR}/tclmetar
 
-install-dirs:
-	install -d ${MYDOCDIR}
-	install -d ${MYLIBDIR}
-	install -d ${MYEXAMPLESDIR}
+INSTALL =       @INSTALL@
+TCLSH =		@TCLSH@
+
+all: ${TARGET}
+
+${TARGET}: ${SRC}
+	cd ${TCLMETAR_DIR}; ${MAKE}
+	sed -e /%TCLMETAR_INSTALLDIR%/s##${TCLMETAR_INSTALLDIR}# \
+	-e /%TCLSH%/s##${TCLSH}# ${SRC} > ${TARGET}
+
+install: all
+	${INSTALL} -m 644 ${TCLMETAR_FILES} ${TCLMETAR_INSTALLDIR}
+	${INSTALL} -m 755 ${TARGET} ${BINDIR}/${PROGNAME}
 
 clean:
-	for dir in ${DIRS}; do \
-	(cd $$dir; ${MAKE} clean) \
-	done
-	rm -f *~ Makefile Makefile.inc
+	cd ${TCLMETAR_DIR}; ${MAKE} clean
+	rm -f *~ Makefile ${TARGET}
