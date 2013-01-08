@@ -1,11 +1,11 @@
 #!%TCLSH%
 #
+# $Id$
+#
 # Copyright (c) 2008 Jose F. Nieves <nieves@ltp.uprrp.edu>
 #
 # See LICENSE
 #
-# $Id: metardc.tcl,v 6653383e3b4a 2010/07/28 15:44:17 nieves $
-
 # Usage: metardc [-c | -d] [-h <tag> [-m] | [-t [-k]]] [-l location]
 #               [-o outputfile] [-s recseparator] [-e obdata | inputfile];
 #
@@ -165,20 +165,19 @@ proc print_report_html {fout line} {
 
     ::metar::decode $line;
 
-    if ($option(m) == 0}{
+    if {$option(m) == 0} {
 	set fmt "<tr><td>%s</td><td>%s</td></tr>\n";
     } else {
 	set fmt "<b>%s</b><br/>%s<br/><br/>\n";
     }
 
-    append _header $::metar::metar(param,type) " Report for " \
-	$::metar::metar(obs,STATION);
+    append _header $::metar::metar(param,type) " " $::metar::metar(obs,STATION);
     if {$option(l) ne ""} {
 	append _header " at " $option(l);
     }
     append result "<$option(h)>" ${_header} "</$option(h)>\n";
 
-    if ($option(m) == 0}{
+    if {$option(m) == 0} {
 	append result "<table border>\n";
     }
 
@@ -247,7 +246,7 @@ proc print_report_html {fout line} {
 	append result [format $fmt "Remarks" $::metar::metar(text,snincr)];
     }
 
-    if ($option(m) == 0}{
+    if {$option(m) == 0} {
 	append result "</table>";
     }
 
