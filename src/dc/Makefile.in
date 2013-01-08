@@ -3,10 +3,9 @@
 #
 @include@ @q@../../Makefile.inc@q@
 
-PROGNAME =	@PROGNAME@
-
 SRC =		dc.tcl
-TARGET =	${PROGNAME}
+TARGET =	dc
+PROGNAME =	dc
 
 INSTALL =       @INSTALL@
 TCLSH =		@TCLSH@
